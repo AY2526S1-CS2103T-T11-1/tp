@@ -287,33 +287,220 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 *{More to be added}*
 
 ### Use cases
+_For all use cases below:_
 
-(For all use cases below, the **System** is the `AddressBook` and the **Actor** is the `user`, unless specified otherwise)
+**System**: `HustleHub` 
+<br>
+**Actor**: `user`
 
-**Use case: Delete a person**
+
+<details>
+    <summary><b>UC01 - View Job Applications</b></summary>
 
 **MSS**
-
-1.  User requests to list persons
-2.  AddressBook shows a list of persons
-3.  User requests to delete a specific person in the list
-4.  AddressBook deletes the person
+1. User opens HustleHub
+2. System retrieves saved job applications
+3. System shows a list of job applications to user
 
     Use case ends.
 
 **Extensions**
+* 2a. System fails to retrieve saved job applications.
+  * 2a1. System shows user an error message
 
-* 2a. The list is empty.
+  Use case resumes at step 3.
+---
+</details>
+
+<details>
+    <summary><b>UC02 - Add Job Application</b></summary>
+
+**Preconditions**
+* User already opened the system
+
+**MSS**
+1. User enters job application details
+2. User submits job application details
+3. System informs user upon successful completion
+4. System displays new job application
+
+   Use case ends.
+
+**Extensions**
+
+* 2a. User submits invalid job application details
+  * 2a1. System shows user an error message 
+
+   Use case ends.
+---
+</details>
+
+<details>
+    <summary><b>UC03 - Delete a Job Application</b></summary>
+
+**Preconditions**
+* User already opened the system
+
+**MSS**
+1. User enters job application details
+2. User submits job application details
+3. System informs user upon successful deletion
+4. System no longer displays that job application
+
+   Use case ends.
+
+**Extensions**
+
+* 2a. User submits invalid job application details
+    * 2a1. System shows user an error message
 
   Use case ends.
+---
+</details>
 
-* 3a. The given index is invalid.
+<details>
+    <summary><b>UC04 - Save Job Applications</b></summary>
 
-    * 3a1. AddressBook shows an error message.
+**Preconditions**
+* User already opened the system
+* There is at least 1 job application in the system
+* 
+**MSS**
+1. User requests to save job application data
+2. System saves job applications
+3. System informs user upon completion of saving data
 
-      Use case resumes at step 2.
+   Use case ends.
 
-*{More to be added}*
+**Extensions**
+
+* 2a. System fails to save job applications
+    * 2a1. System shows user an error message
+
+  Use case ends.
+---
+</details>
+
+<details>
+    <summary><b>UC05 - Update Job Application</b></summary>
+
+**Preconditions**
+* User already opened the system
+* There is at least 1 job application in the system
+
+**MSS**
+1. User enters updated job application details
+2. User submits updated job application details
+3. System informs user upon successful update
+4. System displays the updated job application
+
+   Use case ends.
+
+**Extensions**
+
+* 2a. User submits invalid job application details
+    * 2a1. System shows user an error message
+
+  Use case ends.
+---
+</details>
+
+<details>
+    <summary><b>UC06 - Tagging a Job Application</b></summary>
+
+**Preconditions**
+* User already opened the system
+* There is at least 1 job application in the system
+
+**MSS**
+1. User enters a tag for a job application
+2. User submits tag details
+3. System informs user upon successful tagging
+4. System displays the tag in the job application
+
+   Use case ends.
+
+**Extensions**
+
+* 2a. User submits invalid tagging details
+    * 2a1. System shows user an error message
+
+  Use case ends.
+---
+</details>
+
+<details>
+    <summary><b>UC07 - Sorting Job Applications</b></summary>
+
+**Preconditions**
+* User already opened the system
+* There is at least 1 job application in the system
+
+**MSS**
+1. User enters a criteria for sorting
+2. User submits sorting criteria
+3. System informs user upon successful sorting
+4. System displays newly sorted list of applications
+
+Use case ends.
+
+**Extensions**
+
+* 2a. User submits invalid sorting criteria
+    * 2a1. System shows user an error message
+
+  Use case ends.
+---
+</details>
+
+<details>
+    <summary><b>UC08 - Filtering Job Applications</b></summary>
+
+**Preconditions**
+* User already opened the system
+
+**MSS**
+1. User enters a criteria to filter job application
+2. User submits filtering criteria
+3. System informs user upon successful filtering
+4. System displays a list of filtered job applications
+
+Use case ends.
+
+**Extensions**
+
+* 2a. User submits invalid filtering criteria
+    * 2a1. System shows user an error message
+
+  Use case ends.
+---
+</details>
+
+<details>
+    <summary><b>UC09 - Archiving a Job Application</b></summary>
+
+**Preconditions**
+* User already opened the system
+* There is at least 1 job application in the system
+
+**MSS**
+1. User enters a require to archive a particular job application
+2. User submits job application details
+3. System informs user upon successful archival
+4. System displays an indicator that the application is archived 
+
+Use case ends.
+
+**Extensions**
+
+* 2a. User submits invalid job application details
+    * 2a1. System shows user an error message
+
+  Use case ends.
+---
+</details>
+
+
 
 ### Non-Functional Requirements
 
@@ -325,6 +512,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 ### Glossary
 
+* **Job Application**: A document with at least these 4 details: a company name, role name, a deadline and an application status
 * **Mainstream OS**: Windows, Linux, Unix, MacOS
 * **Private contact detail**: A contact detail that is not meant to be shared with others
 
