@@ -1,20 +1,18 @@
 package seedu.address.logic.commands;
 
-import static java.util.Objects.requireNonNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalPersons.ALICE;
 
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.function.Predicate;
+import static java.util.Objects.requireNonNull;
+
+import javafx.collections.ObservableList;
 
 import org.junit.jupiter.api.Test;
 
-import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -24,6 +22,11 @@ import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.person.Person;
 import seedu.address.testutil.PersonBuilder;
+
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.function.Predicate;
 
 public class AddCommandTest {
 
@@ -39,7 +42,8 @@ public class AddCommandTest {
 
         CommandResult commandResult = new AddCommand(validPerson).execute(modelStub);
 
-        assertEquals(String.format(AddCommand.MESSAGE_SUCCESS, Messages.format(validPerson)),
+        assertEquals(
+                String.format(AddCommand.MESSAGE_SUCCESS, Messages.format(validPerson)),
                 commandResult.getFeedbackToUser());
         assertEquals(Arrays.asList(validPerson), modelStub.personsAdded);
     }
@@ -50,7 +54,10 @@ public class AddCommandTest {
         AddCommand addCommand = new AddCommand(validPerson);
         ModelStub modelStub = new ModelStubWithPerson(validPerson);
 
-        assertThrows(CommandException.class, AddCommand.MESSAGE_DUPLICATE_PERSON, () -> addCommand.execute(modelStub));
+        assertThrows(
+                CommandException.class,
+                AddCommand.MESSAGE_DUPLICATE_PERSON,
+                () -> addCommand.execute(modelStub));
     }
 
     @Test
@@ -84,9 +91,7 @@ public class AddCommandTest {
         assertEquals(expected, addCommand.toString());
     }
 
-    /**
-     * A default model stub that have all of the methods failing.
-     */
+    /** A default model stub that have all of the methods failing. */
     private class ModelStub implements Model {
         @Override
         public void setUserPrefs(ReadOnlyUserPrefs userPrefs) {
@@ -149,19 +154,17 @@ public class AddCommandTest {
         }
 
         @Override
-        public ObservableList<Person> getFilteredPersonList() {
+        public ObservableList<Person> getFilteredJobList() {
             throw new AssertionError("This method should not be called.");
         }
 
         @Override
-        public void updateFilteredPersonList(Predicate<Person> predicate) {
+        public void updateFilteredJobList(Predicate<Person> predicate) {
             throw new AssertionError("This method should not be called.");
         }
     }
 
-    /**
-     * A Model stub that contains a single person.
-     */
+    /** A Model stub that contains a single person. */
     private class ModelStubWithPerson extends ModelStub {
         private final Person person;
 
@@ -177,9 +180,7 @@ public class AddCommandTest {
         }
     }
 
-    /**
-     * A Model stub that always accept the person being added.
-     */
+    /** A Model stub that always accept the person being added. */
     private class ModelStubAcceptingPersonAdded extends ModelStub {
         final ArrayList<Person> personsAdded = new ArrayList<>();
 
@@ -200,5 +201,4 @@ public class AddCommandTest {
             return new AddressBook();
         }
     }
-
 }
