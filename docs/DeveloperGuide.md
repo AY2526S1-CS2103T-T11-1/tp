@@ -136,14 +136,25 @@ The `Model` component,
 
 ### Storage component
 
-**API** : [`Storage.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/storage/Storage.java)
+**API** : [`DataStorage.java`](https://github.com/AY2526S1-CS2103T-T11-1/tp/blob/master/src/main/java/seedu/address/storage/DataStorage.java)
 
-<img src="images/StorageClassDiagram.png" width="550" />
+<img src="images/HustleHub-Storage.png"/>
 
-The `Storage` component,
-* can save both address book data and user preference data in JSON format, and read them back into corresponding objects.
-* inherits from both `AddressBookStorage` and `UserPrefStorage`, which means it can be treated as either one (if only the functionality of only one is needed).
-* depends on some classes in the `Model` component (because the `Storage` component's job is to save/retrieve objects that belong to the `Model`)
+The `Storage` component manages **persistence (saving and loading)** for job application and user preference data, using the JSON format.
+
+<details>
+    <summary><b>Technical Remarks</b></summary>
+
+* For easy customisation/replacement, `JobApplicationStorage` and `UserPrefStorage` are left as interfaces to abstract the storage component.
+
+* `DataStorageManager` can be treated as a `JobApplicationStorage` or `UserPrefStorage` object as it implements both interfaces.
+
+* Depends on some classes in the `Model` component such as `JobApplication` as it saves or loads objects from said component.
+* `JsonSerializableJobApplicationList & SerializableJobApplication` have a dependency with on JobApplications as both classes possess logic to [deserialize/serialize](#glossary) `JobApplication` objects.
+
+</details>
+
+---
 
 ### Common classes
 
@@ -518,6 +529,7 @@ Use case ends.
 * **Job Application**: A document with at least these 4 details: a company name, role name, a deadline and an application status
 * **Mainstream OS**: Windows, Linux, Unix, MacOS
 * **Private contact detail**: A contact detail that is not meant to be shared with others
+* **Serialization**: The process to convert complex objects into a simpler form for various purposes like storage, computation, or encryption.
 
 --------------------------------------------------------------------------------------------------------------------
 
