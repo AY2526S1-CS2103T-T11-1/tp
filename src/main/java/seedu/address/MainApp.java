@@ -2,6 +2,7 @@ package seedu.address;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -15,18 +16,18 @@ import seedu.address.commons.util.ConfigUtil;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.Logic;
 import seedu.address.logic.LogicManager;
-import seedu.address.model.AddressBook;
-import seedu.address.model.Model;
-import seedu.address.model.ModelManager;
-import seedu.address.model.ReadOnlyAddressBook;
-import seedu.address.model.ReadOnlyUserPrefs;
-import seedu.address.model.UserPrefs;
-import seedu.address.model.util.SampleDataUtil;
-import seedu.address.storage.AddressBookStorage;
-import seedu.address.storage.JsonAddressBookStorage;
+import seedu.address.model.jobapplication.JobApplication;
+import seedu.address.model.jobapplication.JobBook;
+import seedu.address.model.jobapplication.Model;
+import seedu.address.model.jobapplication.ModelManager;
+import seedu.address.model.jobapplication.ReadOnlyJobBook;
+import seedu.address.model.jobapplication.ReadOnlyUserPrefs;
+import seedu.address.model.jobapplication.UserPrefs;
+import seedu.address.storage.DataStorage;
+import seedu.address.storage.DataStorageManager;
+import seedu.address.storage.JobApplicationStorage;
+import seedu.address.storage.JsonJobApplicationStorage;
 import seedu.address.storage.JsonUserPrefsStorage;
-import seedu.address.storage.Storage;
-import seedu.address.storage.StorageManager;
 import seedu.address.storage.UserPrefsStorage;
 import seedu.address.ui.Ui;
 import seedu.address.ui.UiManager;
@@ -42,7 +43,7 @@ public class MainApp extends Application {
 
     protected Ui ui;
     protected Logic logic;
-    protected Storage storage;
+    protected DataStorage dataStorage;
     protected Model model;
     protected Config config;
 
@@ -57,12 +58,14 @@ public class MainApp extends Application {
 
         UserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(config.getUserPrefsFilePath());
         UserPrefs userPrefs = initPrefs(userPrefsStorage);
-        AddressBookStorage addressBookStorage = new JsonAddressBookStorage(userPrefs.getAddressBookFilePath());
-        storage = new StorageManager(addressBookStorage, userPrefsStorage);
 
-        model = initModelManager(storage, userPrefs);
+        // New code
+        JobApplicationStorage jobApplicationStorage = new JsonJobApplicationStorage(userPrefs.getJobBookFilePath());
+        dataStorage = new DataStorageManager(jobApplicationStorage, userPrefsStorage);
 
-        logic = new LogicManager(model, storage);
+        model = initModelManager(dataStorage, userPrefs);
+
+        logic = new LogicManager(model, dataStorage);
 
         ui = new UiManager(logic);
     }
@@ -72,22 +75,25 @@ public class MainApp extends Application {
      * The data from the sample address book will be used instead if {@code storage}'s address book is not found,
      * or an empty address book will be used instead if errors occur when reading {@code storage}'s address book.
      */
-    private Model initModelManager(Storage storage, ReadOnlyUserPrefs userPrefs) {
-        logger.info("Using data file : " + storage.getAddressBookFilePath());
+    private Model initModelManager(DataStorage storage, ReadOnlyUserPrefs userPrefs) {
+        logger.info("Using data file : " + storage.getDataFilePath());
 
-        Optional<ReadOnlyAddressBook> addressBookOptional;
-        ReadOnlyAddressBook initialData;
+        ReadOnlyJobBook initialData;
+        JobBook book = new JobBook();
+
         try {
-            addressBookOptional = storage.readAddressBook();
-            if (!addressBookOptional.isPresent()) {
-                logger.info("Creating a new data file " + storage.getAddressBookFilePath()
-                        + " populated with a sample AddressBook.");
-            }
-            initialData = addressBookOptional.orElseGet(SampleDataUtil::getSampleAddressBook);
+
+            List<JobApplication> applicationList = storage.readDataFile();
+            book.setApplications(applicationList);
+
+            logger.info("Successfully loaded " + applicationList.size() + " entries");
+
+            initialData = book;
+
         } catch (DataLoadingException e) {
-            logger.warning("Data file at " + storage.getAddressBookFilePath() + " could not be loaded."
+            logger.warning("Data file at " + storage.getDataFilePath() + " could not be loaded."
                     + " Will be starting with an empty AddressBook.");
-            initialData = new AddressBook();
+            initialData = book;
         }
 
         return new ModelManager(initialData, userPrefs);
@@ -141,13 +147,13 @@ public class MainApp extends Application {
      * or a new {@code UserPrefs} with default configuration if errors occur when
      * reading from the file.
      */
-    protected UserPrefs initPrefs(UserPrefsStorage storage) {
-        Path prefsFilePath = storage.getUserPrefsFilePath();
+    protected UserPrefs initPrefs(UserPrefsStorage prefStorage) {
+        Path prefsFilePath = prefStorage.getUserPrefsFilePath();
         logger.info("Using preference file : " + prefsFilePath);
 
         UserPrefs initializedPrefs;
         try {
-            Optional<UserPrefs> prefsOptional = storage.readUserPrefs();
+            Optional<UserPrefs> prefsOptional = prefStorage.readUserPrefs();
             if (!prefsOptional.isPresent()) {
                 logger.info("Creating new preference file " + prefsFilePath);
             }
@@ -160,7 +166,7 @@ public class MainApp extends Application {
 
         //Update prefs file in case it was missing to begin with or there are new/unused fields
         try {
-            storage.saveUserPrefs(initializedPrefs);
+            prefStorage.saveUserPrefs(initializedPrefs);
         } catch (IOException e) {
             logger.warning("Failed to save config file : " + StringUtil.getDetails(e));
         }
@@ -178,7 +184,7 @@ public class MainApp extends Application {
     public void stop() {
         logger.info("============================ [ Stopping AddressBook ] =============================");
         try {
-            storage.saveUserPrefs(model.getUserPrefs());
+            dataStorage.saveUserPrefs(model.getUserPrefs());
         } catch (IOException e) {
             logger.severe("Failed to save preferences " + StringUtil.getDetails(e));
         }

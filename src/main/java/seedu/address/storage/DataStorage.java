@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Optional;
 
 import seedu.address.commons.exceptions.DataLoadingException;
-import seedu.address.model.ReadOnlyUserPrefs;
-import seedu.address.model.UserPrefs;
 import seedu.address.model.jobapplication.JobApplication;
+import seedu.address.model.jobapplication.ReadOnlyUserPrefs;
+import seedu.address.model.jobapplication.UserPrefs;
 
 /**
  * API of the Storage component for HustleHub.

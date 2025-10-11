@@ -21,7 +21,7 @@ import seedu.address.model.jobapplication.JobApplication;
  */
 public class JsonJobApplicationStorage implements JobApplicationStorage {
 
-    private static final Logger logger = LogsCenter.getLogger(JsonAddressBookStorage.class);
+    private static final Logger logger = LogsCenter.getLogger(JsonJobApplicationStorage.class);
 
     private Path filePath;
 

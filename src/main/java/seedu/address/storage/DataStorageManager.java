@@ -8,16 +8,16 @@ import java.util.logging.Logger;
 
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.exceptions.DataLoadingException;
-import seedu.address.model.ReadOnlyUserPrefs;
-import seedu.address.model.UserPrefs;
 import seedu.address.model.jobapplication.JobApplication;
+import seedu.address.model.jobapplication.ReadOnlyUserPrefs;
+import seedu.address.model.jobapplication.UserPrefs;
 
 /**
  * Manages storage of Job Application data in local storage.
  */
 public class DataStorageManager implements DataStorage {
 
-    private static final Logger logger = LogsCenter.getLogger(StorageManager.class);
+    private static final Logger logger = LogsCenter.getLogger(DataStorageManager.class);
     private final JobApplicationStorage jobApplicationStorage;
     private final UserPrefsStorage userPrefsStorage;
 

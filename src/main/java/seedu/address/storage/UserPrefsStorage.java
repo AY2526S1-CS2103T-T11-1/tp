@@ -5,8 +5,8 @@ import java.nio.file.Path;
 import java.util.Optional;
 
 import seedu.address.commons.exceptions.DataLoadingException;
-import seedu.address.model.ReadOnlyUserPrefs;
-import seedu.address.model.UserPrefs;
+import seedu.address.model.jobapplication.ReadOnlyUserPrefs;
+import seedu.address.model.jobapplication.UserPrefs;
 
 /**
  * Represents a storage for {@link seedu.address.model.UserPrefs}.

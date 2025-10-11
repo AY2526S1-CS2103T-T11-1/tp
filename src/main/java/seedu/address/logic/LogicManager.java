@@ -8,15 +8,16 @@ import java.util.logging.Logger;
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
-import seedu.address.logic.commands.Command;
-import seedu.address.logic.commands.CommandResult;
-import seedu.address.logic.commands.exceptions.CommandException;
-import seedu.address.logic.parser.AddressBookParser;
+import seedu.address.logic.jobcommands.Command;
+import seedu.address.logic.jobcommands.CommandResult;
+import seedu.address.logic.jobcommands.exceptions.JobCommandException;
+import seedu.address.logic.parser.JobBookCommandParser;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.Model;
+import seedu.address.model.AddressBook;
 import seedu.address.model.ReadOnlyAddressBook;
+import seedu.address.model.jobapplication.Model;
 import seedu.address.model.person.Person;
-import seedu.address.storage.Storage;
+import seedu.address.storage.DataStorage;
 
 /**
  * The main LogicManager of the app.
@@ -30,34 +31,37 @@ public class LogicManager implements Logic {
     private final Logger logger = LogsCenter.getLogger(LogicManager.class);
 
     private final Model model;
-    private final Storage storage;
-    private final AddressBookParser addressBookParser;
+
+    //New code
+    private final DataStorage dataStorage;
+
+    private final JobBookCommandParser jobBookCommandParser;
 
     /**
      * Constructs a {@code LogicManager} with the given {@code Model} and {@code Storage}.
      */
-    public LogicManager(Model model, Storage storage) {
+    public LogicManager(Model model, DataStorage dataStorage) {
         this.model = model;
-        this.storage = storage;
-        addressBookParser = new AddressBookParser();
+        this.dataStorage = dataStorage;
+        jobBookCommandParser = new JobBookCommandParser();
     }
 
     @Override
-    public CommandResult execute(String commandText) throws CommandException, ParseException {
+    public CommandResult execute(String commandText) throws JobCommandException, ParseException {
         logger.info("----------------[USER COMMAND][" + commandText + "]");
 
         CommandResult commandResult;
-        Command command = addressBookParser.parseCommand(commandText);
+        Command command = jobBookCommandParser.parseCommand(commandText);
         commandResult = command.execute(model);
 
         // Only save if the command indicates it should trigger a save operation
         if (commandResult.shouldSave()) {
             try {
-                storage.saveAddressBook(model.getAddressBook());
+                dataStorage.saveJobApplicationData(model.getJobBook().getApplicationList());
             } catch (AccessDeniedException e) {
-                throw new CommandException(String.format(FILE_OPS_PERMISSION_ERROR_FORMAT, e.getMessage()), e);
+                throw new JobCommandException(String.format(FILE_OPS_PERMISSION_ERROR_FORMAT, e.getMessage()), e);
             } catch (IOException ioe) {
-                throw new CommandException(String.format(FILE_OPS_ERROR_FORMAT, ioe.getMessage()), ioe);
+                throw new JobCommandException(String.format(FILE_OPS_ERROR_FORMAT, ioe.getMessage()), ioe);
             }
         }
 
@@ -66,17 +70,18 @@ public class LogicManager implements Logic {
 
     @Override
     public ReadOnlyAddressBook getAddressBook() {
-        return model.getAddressBook();
+        //return model.getAddressBook();
+        return new AddressBook();
     }
 
     @Override
     public ObservableList<Person> getFilteredPersonList() {
-        return model.getFilteredPersonList();
+        return null;
     }
 
     @Override
     public Path getAddressBookFilePath() {
-        return model.getAddressBookFilePath();
+        return model.getJobBookFilePath();
     }
 
     @Override
