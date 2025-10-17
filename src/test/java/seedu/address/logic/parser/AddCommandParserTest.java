@@ -5,6 +5,7 @@ import static seedu.address.logic.parser.JobCommandParserTestUtil.assertParseFai
 import static seedu.address.logic.parser.JobCommandParserTestUtil.assertParseSuccess;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 
 import org.junit.jupiter.api.Test;
 
@@ -28,7 +29,7 @@ public class AddCommandParserTest {
         LocalDateTime deadline = LocalDateTime.parse("2025-12-31T23:59");
         JobApplication.Status status = JobApplication.Status.APPLIED;
 
-        JobApplication expectedApplication = new JobApplication(companyName, role, deadline, status);
+        JobApplication expectedApplication = new JobApplication(companyName, role, deadline, status, new HashSet<>());
         assertParseSuccess(parser, " n/Google r/SoftwareEngineer s/APPLIED d/2025-12-31T23:59",
                 new AddJobCommand(expectedApplication));
     }
@@ -40,7 +41,7 @@ public class AddCommandParserTest {
         LocalDateTime deadline = LocalDateTime.parse("2025-11-30T17:00");
         JobApplication.Status status = JobApplication.Status.INPROGRESS;
 
-        JobApplication expectedApplication = new JobApplication(companyName, role, deadline, status);
+        JobApplication expectedApplication = new JobApplication(companyName, role, deadline, status, new HashSet<>());
         assertParseSuccess(parser, " n/Microsoft r/DataScientist s/INPROGRESS d/2025-11-30T17:00",
                 new AddJobCommand(expectedApplication));
     }

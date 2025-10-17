@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -20,15 +21,15 @@ public class DataStorageManagerTest {
 
     private static final JobApplication GOOGLE_APPLICATION = new JobApplication(
             "Google", "Software Engineer", LocalDateTime.of(2024, 12, 31, 23, 59),
-            JobApplication.Status.APPLIED);
+            JobApplication.Status.APPLIED, new HashSet<>());
 
     private static final JobApplication MICROSOFT_APPLICATION = new JobApplication(
             "Microsoft", "Product Manager", LocalDateTime.of(2024, 11, 15, 17, 30),
-            JobApplication.Status.INPROGRESS);
+            JobApplication.Status.INPROGRESS, new HashSet<>());
 
     private static final JobApplication APPLE_APPLICATION = new JobApplication(
             "Apple", "iOS Developer", LocalDateTime.of(2024, 10, 20, 12, 0),
-            JobApplication.Status.REJECTED);
+            JobApplication.Status.REJECTED, new HashSet<>());
 
     @TempDir
     public Path testFolder;

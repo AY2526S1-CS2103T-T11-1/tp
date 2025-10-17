@@ -22,6 +22,7 @@
         <Label fx:id="id" styleClass="cell_big_label" />
         <Label fx:id="companyName" styleClass="cell_big_label" />
       </HBox>
+      <FlowPane fx:id="tags" />
       <Label fx:id="role" styleClass="cell_small_label" />
       <Label fx:id="deadline" styleClass="cell_small_label" />
       <Label fx:id="status" styleClass="cell_small_label" />

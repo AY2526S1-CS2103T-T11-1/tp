@@ -4,8 +4,10 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Set;
 
 import seedu.address.commons.util.ToStringBuilder;
+import seedu.address.model.tag.Tag;
 
 /**
  * Represents a Job Application.
@@ -22,6 +24,9 @@ public class JobApplication {
         REJECTED
     }
 
+    // Limiter on number of tags
+    public static final int MAX_TAGS = 3;
+
     // Identity fields
     private String companyName;
     private String role;
@@ -29,6 +34,7 @@ public class JobApplication {
     // Data fields
     private LocalDateTime deadline;
     private Status status;
+    private Set<Tag> tags;
 
     /**
      * Constructs a JobApplication.
@@ -39,12 +45,13 @@ public class JobApplication {
      * @param deadline The application deadline.
      * @param status The current status of the application.
      */
-    public JobApplication(String companyName, String role, LocalDateTime deadline, Status status) {
+    public JobApplication(String companyName, String role, LocalDateTime deadline, Status status, Set<Tag> tags) {
         requireAllNonNull(companyName, role, deadline, status);
         this.companyName = companyName;
         this.role = role;
         this.deadline = deadline;
         this.status = status;
+        this.tags = tags;
     }
 
     /**
@@ -81,6 +88,22 @@ public class JobApplication {
      */
     public Status getStatus() {
         return status;
+    }
+
+    /**
+     * Returns the list of tags
+     *
+     * @return The list of tags
+     */
+    public Set<Tag> getTags() {
+        return tags;
+    }
+
+    /**
+     * Sets the list of tags
+     */
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
     }
 
     /**

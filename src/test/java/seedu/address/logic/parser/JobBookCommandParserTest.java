@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_APPLICATION;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +22,7 @@ public class JobBookCommandParserTest {
         LocalDateTime deadline = LocalDateTime.parse("2025-12-31T23:59");
         JobApplication.Status status = JobApplication.Status.APPLIED;
 
-        JobApplication application = new JobApplication(companyName, role, deadline, status);
+        JobApplication application = new JobApplication(companyName, role, deadline, status, new HashSet<>());
         AddJobCommand command = (AddJobCommand) parser.parseCommand(
             AddJobCommand.COMMAND_WORD + " n/Google r/SoftwareEngineer s/APPLIED d/2025-12-31T23:59");
         assertEquals(new AddJobCommand(application), command);

@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -24,15 +25,15 @@ public class JsonJobApplicationStorageTest {
 
     private static final JobApplication GOOGLE_APPLICATION = new JobApplication(
             "Google", "Software Engineer", LocalDateTime.of(2024, 12, 31, 23, 59),
-            JobApplication.Status.APPLIED);
+            JobApplication.Status.APPLIED, new HashSet<>());
 
     private static final JobApplication MICROSOFT_APPLICATION = new JobApplication(
             "Microsoft", "Product Manager", LocalDateTime.of(2024, 11, 15, 17, 30),
-            JobApplication.Status.INPROGRESS);
+            JobApplication.Status.INPROGRESS, new HashSet<>());
 
     private static final JobApplication APPLE_APPLICATION = new JobApplication(
             "Apple", "iOS Developer", LocalDateTime.of(2024, 10, 20, 12, 0),
-            JobApplication.Status.REJECTED);
+            JobApplication.Status.REJECTED, new HashSet<>());
 
     @TempDir
     public Path testFolder;
@@ -91,7 +92,7 @@ public class JsonJobApplicationStorageTest {
         // Modify data, overwrite existing file, and read back
         List<JobApplication> modified = new ArrayList<>(original);
         modified.add(new JobApplication("Netflix", "Data Scientist",
-                LocalDateTime.of(2024, 9, 30, 18, 0), JobApplication.Status.APPLIED));
+                LocalDateTime.of(2024, 9, 30, 18, 0), JobApplication.Status.APPLIED, new HashSet<>()));
         modified.remove(0); // Remove Google application
 
         jsonJobApplicationStorage.saveJobApplicationData(modified, filePath);
@@ -101,7 +102,7 @@ public class JsonJobApplicationStorageTest {
         // Save and read without specifying file path
         List<JobApplication> finalList = new ArrayList<>(modified);
         finalList.add(new JobApplication("Amazon", "Cloud Engineer",
-                LocalDateTime.of(2024, 8, 15, 14, 30), JobApplication.Status.INPROGRESS));
+                LocalDateTime.of(2024, 8, 15, 14, 30), JobApplication.Status.INPROGRESS, new HashSet<>()));
 
         jsonJobApplicationStorage.saveJobApplicationData(finalList); // file path not specified
         readBack = jsonJobApplicationStorage.readDataFile(); // file path not specified

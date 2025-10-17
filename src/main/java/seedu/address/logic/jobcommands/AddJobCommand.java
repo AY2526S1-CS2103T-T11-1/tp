@@ -16,8 +16,8 @@ public class AddJobCommand extends Command {
     public static final String COMMAND_WORD = "add";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a job application to the job book.\n"
-            + "Parameters: n/COMPANY_NAME r/ROLE s/STATUS d/DEADLINE\n"
-            + "Example: " + COMMAND_WORD + " n/Google r/SoftwareEngineer s/APPLIED d/2025-12-31T23:59";
+            + "Parameters: n/COMPANY_NAME r/ROLE s/STATUS d/DEADLINE t/TAG\n"
+            + "Example: " + COMMAND_WORD + " n/Google r/SoftwareEngineer s/APPLIED d/2025-12-31T23:59 t/6-Month";
 
     public static final String MESSAGE_SUCCESS = "New job application added: %1$s";
     public static final String MESSAGE_DUPLICATE_APPLICATION =

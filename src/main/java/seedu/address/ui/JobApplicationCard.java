@@ -1,9 +1,11 @@
 package seedu.address.ui;
 
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import seedu.address.model.jobapplication.JobApplication;
@@ -37,6 +39,8 @@ public class JobApplicationCard extends UiPart<Region> {
     private Label deadline;
     @FXML
     private Label status;
+    @FXML
+    private FlowPane tags;
 
     /**
      * Creates a {@code JobApplicationCard} with the given {@code JobApplication} and index to display.
@@ -49,5 +53,8 @@ public class JobApplicationCard extends UiPart<Region> {
         role.setText(jobApplication.getRole());
         deadline.setText(jobApplication.getDeadline().format(DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm")));
         status.setText(jobApplication.getStatus().toString());
+        jobApplication.getTags().stream()
+                .sorted(Comparator.comparing(tag -> tag.tagName))
+                .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
     }
 }
