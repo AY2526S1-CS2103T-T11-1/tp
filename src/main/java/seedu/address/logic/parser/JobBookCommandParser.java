@@ -5,14 +5,21 @@ import static seedu.address.logic.Messages.MESSAGE_UNKNOWN_COMMAND;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.logic.jobcommands.AddJobCommand;
 import seedu.address.logic.jobcommands.Command;
 import seedu.address.logic.jobcommands.DeleteJobCommand;
 import seedu.address.logic.jobcommands.ExitCommand;
+import seedu.address.logic.jobcommands.FindCommand;
 import seedu.address.logic.jobcommands.SaveCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.logic.parser.exceptions.ParseException;
+
+import seedu.address.model.jobapplication.NameContainsKeywordsPredicate;
 
 /**
  * Parses user input.
@@ -56,6 +63,12 @@ public class JobBookCommandParser {
 
         case SaveCommand.COMMAND_WORD:
             return new SaveCommand();
+
+        case FindCommand.COMMAND_WORD:
+            String[] keywords = arguments.strip().split(" ");
+            List<String> keywordList = new ArrayList<>(Arrays.asList(keywords));
+            var predicate = new NameContainsKeywordsPredicate(keywordList);
+            return new FindCommand(predicate);
 
         case ExitCommand.COMMAND_WORD:
             return new ExitCommand();
